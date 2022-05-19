@@ -1,3 +1,5 @@
+// TODO: Figure out how to reset setInterval when new action performed within 5 seconds
+
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Notification from './components/Notification'
