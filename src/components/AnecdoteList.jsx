@@ -5,7 +5,9 @@ import { saveTimeoutId } from '../reducers/timeoutReducer'
 
 const AnecdoteList = () => {
   	const dispatch = useDispatch()
+	const currentFilter = useSelector(state => state.filter)
 	const anecdotes = useSelector(state => state.anecdotes)
+		.filter(a => a.content.toLowerCase().includes(currentFilter.toLowerCase()))
 	const currentTimeoutId = useSelector(state => state.timeout)
 	
 	const handleVote = id => {
