@@ -1,8 +1,10 @@
+// TODO: refactor to combne timeoutReducer with this one
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
 	message: '',
-	isShown: false
+	isShown: false,
+	timeOutId: NaN
 }
 
 const notificationSlice = createSlice({
@@ -19,8 +21,28 @@ const notificationSlice = createSlice({
 				state.isShown = false
 			}
 		},
+		saveTimeoutId(state, action) {
+			const newId = action.payload
+			state.timeOutId = newId
+		}
 	}
 })
 
-export const { changeNotification } = notificationSlice.actions
+export const { changeNotification, saveTimeoutId } = notificationSlice.actions
+
+export const setNotification = (text, time) => {
+	return async (dispatch, getState) => {
+		const currentTimeoutId = getState().notification.timeOutId
+		if (currentTimeoutId) {
+			clearTimeout(currentTimeoutId)
+		}
+		dispatch(changeNotification(text))
+		const timeOutId = setTimeout(() => {
+			dispatch(changeNotification(''))
+			dispatch(saveTimeoutId(NaN))
+		}, time)
+		dispatch(saveTimeoutId(timeOutId))
+	}
+}	
+
 export default notificationSlice.reducer
